@@ -7,3 +7,4 @@ symbols to avoid conflicts with other copies of the library within a single
 process.
 
   * Add `.gitattributes` to avoid failures in VTK's content checks.
+  * Remove executable permissions from include files.

@@ -34,7 +34,7 @@ endif()
 #############################################################################
 
 # automatically parse the version number
-file(READ "${PROJECT_SOURCE_DIR}/Eigen/src/Core/util/Macros.h" _eigen_version_header)
+file(READ "${PROJECT_SOURCE_DIR}/eigen/src/Core/util/Macros.h" _eigen_version_header)
 string(REGEX MATCH "define[ \t]+EIGEN_WORLD_VERSION[ \t]+([0-9]+)" _eigen_world_version_match "${_eigen_version_header}")
 set(EIGEN_WORLD_VERSION "${CMAKE_MATCH_1}")
 string(REGEX MATCH "define[ \t]+EIGEN_MAJOR_VERSION[ \t]+([0-9]+)" _eigen_major_version_match "${_eigen_version_header}")
@@ -678,6 +678,6 @@ add_custom_target ( uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EigenUninstall.cmake)
 else ()
 vtk_module_install_headers(
-  DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/Eigen/"
-  SUBDIR      "vtkeigen/Eigen/")
+  DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/eigen/"
+  SUBDIR      "vtkeigen/eigen/")
 endif ()

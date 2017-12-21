@@ -1,6 +1,8 @@
 project(Eigen3)
 
+if (FALSE) # XXX(kitware): VTK handles the minimum CMake version.
 cmake_minimum_required(VERSION 2.8.5)
+endif ()
 
 # guard against in-source builds
 
@@ -41,6 +43,7 @@ string(REGEX MATCH "define[ \t]+EIGEN_MINOR_VERSION[ \t]+([0-9]+)" _eigen_minor_
 set(EIGEN_MINOR_VERSION "${CMAKE_MATCH_1}")
 set(EIGEN_VERSION_NUMBER ${EIGEN_WORLD_VERSION}.${EIGEN_MAJOR_VERSION}.${EIGEN_MINOR_VERSION})
 
+if (FALSE) # XXX(kitware): VTK doesn't have a mercurial import.
 # if we are not in a mercurial clone
 if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/.hg)
   # if the mercurial program is absent or this will leave the EIGEN_HG_CHANGESET string empty,
@@ -55,6 +58,7 @@ string(REGEX MATCH "^changeset: *[0-9]*:([0-9;a-f]+).*" EIGEN_HG_CHANGESET_MATCH
 set(EIGEN_HG_CHANGESET "${CMAKE_MATCH_1}")
 endif(EIGEN_BRANCH_OUTPUT MATCHES "default")
 #...and show it next to the version number
+endif ()
 if(EIGEN_HG_CHANGESET)
   set(EIGEN_VERSION "${EIGEN_VERSION_NUMBER} (mercurial changeset ${EIGEN_HG_CHANGESET})")
 else(EIGEN_HG_CHANGESET)
@@ -63,7 +67,9 @@ endif(EIGEN_HG_CHANGESET)
 
 
 include(CheckCXXCompilerFlag)
+if (FALSE) # XXX(kitware): VTK handles installation.
 include(GNUInstallDirs)
+endif ()
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
@@ -74,8 +80,10 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 find_package(StandardMathLibrary)
 
 
+if (FALSE) # XXX(kitware): hiding third party cache variables.
 set(EIGEN_TEST_CUSTOM_LINKER_FLAGS  "" CACHE STRING "Additional linker flags when linking unit tests.")
 set(EIGEN_TEST_CUSTOM_CXX_FLAGS     "" CACHE STRING "Additional compiler flags when compiling unit tests.")
+endif ()
 
 set(EIGEN_STANDARD_LIBRARIES_TO_LINK_TO "")
 
@@ -94,21 +102,32 @@ else()
 
 endif()
 
+if (FALSE) # XXX(kitware): silencing third party messages.
 if(EIGEN_STANDARD_LIBRARIES_TO_LINK_TO)
   message(STATUS "Standard libraries to link to explicitly: ${EIGEN_STANDARD_LIBRARIES_TO_LINK_TO}")
 else()
   message(STATUS "Standard libraries to link to explicitly: none")
 endif()
+endif ()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_BUILD_BTL "Build benchmark suite" OFF)
+else ()
+set(EIGEN_BUILD_BTL OFF)
+endif ()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 # Disable pkgconfig only for native Windows builds
 if(NOT WIN32 OR NOT CMAKE_HOST_SYSTEM_NAME MATCHES Windows)
   option(EIGEN_BUILD_PKGCONFIG "Build pkg-config .pc file for Eigen" ON)
 endif()
+else ()
+set(EIGEN_BUILD_PKGCONFIG ON)
+endif ()
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_SPLIT_LARGE_TESTS "Split large tests into smaller executables" ON)
 
 option(EIGEN_DEFAULT_TO_ROW_MAJOR "Use row-major as default matrix storage order" OFF)
@@ -117,6 +136,11 @@ if(EIGEN_DEFAULT_TO_ROW_MAJOR)
 endif()
 
 set(EIGEN_TEST_MAX_SIZE "320" CACHE STRING "Maximal matrix/vector size, default is 320")
+else ()
+set(EIGEN_SPLIT_LARGE_TESTS OFF)
+set(EIGEN_DEFAULT_TO_ROW_MAJOR OFF)
+set(EIGEN_TEST_MAX_SIZE 320)
+endif ()
 
 macro(ei_add_cxx_compiler_flag FLAG)
   string(REGEX REPLACE "-" "" SFLAG1 ${FLAG})
@@ -191,6 +215,7 @@ if(NOT MSVC)
   
   set(CMAKE_REQUIRED_FLAGS "")
 
+  if (FALSE) # XXX(kitware): hardcoding settings.
   option(EIGEN_TEST_SSE2 "Enable/Disable SSE2 in tests/examples" OFF)
   if(EIGEN_TEST_SSE2)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
@@ -279,10 +304,30 @@ if(NOT MSVC)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=z13 -mzvector")
     message(STATUS "Enabling S390X(zEC13) ZVECTOR in tests/examples")
   endif()
+  else ()
+  set(EIGEN_TEST_SSE2 OFF)
+  set(EIGEN_TEST_SSE3 OFF)
+  set(EIGEN_TEST_SSSE3 OFF)
+  set(EIGEN_TEST_SSE4_1 OFF)
+  set(EIGEN_TEST_SSE4_2 OFF)
+  set(EIGEN_TEST_AVX OFF)
+  set(EIGEN_TEST_FMA OFF)
+  set(EIGEN_TEST_AVX512 OFF)
+  set(EIGEN_TEST_F16C OFF)
+  set(EIGEN_TEST_ALTIVEC OFF)
+  set(EIGEN_TEST_VSX OFF)
+  set(EIGEN_TEST_NEON OFF)
+  set(EIGEN_TEST_NEON64 OFF)
+  set(EIGEN_TEST_ZVECTOR OFF)
+  endif ()
 
   check_cxx_compiler_flag("-fopenmp" COMPILER_SUPPORT_OPENMP)
   if(COMPILER_SUPPORT_OPENMP)
+    if (FALSE) # XXX(kitware): hardcoding settings.
     option(EIGEN_TEST_OPENMP "Enable/Disable OpenMP in tests/examples" OFF)
+    else ()
+    set(EIGEN_TEST_OPENMP OFF)
+    endif ()
     if(EIGEN_TEST_OPENMP)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp")
       message(STATUS "Enabling OpenMP in tests/examples")
@@ -305,14 +350,22 @@ else(NOT MSVC)
 
   check_cxx_compiler_flag("/openmp" COMPILER_SUPPORT_OPENMP)
   if(COMPILER_SUPPORT_OPENMP)
+    if (FALSE) # XXX(kitware): hardcoding settings.
     option(EIGEN_TEST_OPENMP "Enable/Disable OpenMP in tests/examples" OFF)
+    else ()
+    set(EIGEN_TEST_OPENMP OFF)
+    endif ()
     if(EIGEN_TEST_OPENMP)
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /openmp")
       message(STATUS "Enabling OpenMP in tests/examples")
     endif()
   endif()
 
+  if (FALSE) # XXX(kitware): hardcoding settings.
   option(EIGEN_TEST_SSE2 "Enable/Disable SSE2 in tests/examples" OFF)
+  else ()
+  set(EIGEN_TEST_SSE2 OFF)
+  endif ()
   if(EIGEN_TEST_SSE2)
     if(NOT CMAKE_CL_64)
       # arch is not supported on 64 bit systems, SSE is enabled automatically.
@@ -322,9 +375,15 @@ else(NOT MSVC)
   endif(EIGEN_TEST_SSE2)
 endif(NOT MSVC)
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_TEST_NO_EXPLICIT_VECTORIZATION "Disable explicit vectorization in tests/examples" OFF)
 option(EIGEN_TEST_X87 "Force using X87 instructions. Implies no vectorization." OFF)
 option(EIGEN_TEST_32BIT "Force generating 32bit code." OFF)
+else ()
+set(EIGEN_TEST_NO_EXPLICIT_VECTORIZATION OFF)
+set(EIGEN_TEST_X87 OFF)
+set(EIGEN_TEST_32BIT OFF)
+endif ()
 
 if(EIGEN_TEST_X87)
   set(EIGEN_TEST_NO_EXPLICIT_VECTORIZATION ON)
@@ -350,24 +409,41 @@ if(EIGEN_TEST_NO_EXPLICIT_VECTORIZATION)
   message(STATUS "Disabling vectorization in tests/examples")
 endif()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_TEST_NO_EXPLICIT_ALIGNMENT "Disable explicit alignment (hence vectorization) in tests/examples" OFF)
+else ()
+set(EIGEN_TEST_NO_EXPLICIT_ALIGNMENT OFF)
+endif ()
 if(EIGEN_TEST_NO_EXPLICIT_ALIGNMENT)
   add_definitions(-DEIGEN_DONT_ALIGN=1)
   message(STATUS "Disabling alignment in tests/examples")
 endif()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_TEST_NO_EXCEPTIONS "Disables C++ exceptions" OFF)
+else ()
+set(EIGEN_TEST_NO_EXCEPTIONS OFF)
+endif ()
 if(EIGEN_TEST_NO_EXCEPTIONS)
   ei_add_cxx_compiler_flag("-fno-exceptions")
   message(STATUS "Disabling exceptions in tests/examples")
 endif()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 option(EIGEN_TEST_CXX11 "Enable testing with C++11 and C++11 features (e.g. Tensor module)." OFF)
+else ()
+set(EIGEN_TEST_CXX11 OFF)
+endif ()
 
+if (FALSE) # XXX(kitware): hardcoding settings.
 set(EIGEN_CUDA_COMPUTE_ARCH 30 CACHE STRING "The CUDA compute architecture level to target when compiling CUDA code")
+else ()
+set(EIGEN_CUDA_COMPUTE_ARCH 30)
+endif ()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
+if (FALSE) # XXX(kitware): VTK handles installation.
 # Backward compatibility support for EIGEN_INCLUDE_INSTALL_DIR
 if(EIGEN_INCLUDE_INSTALL_DIR)
   message(WARNING "EIGEN_INCLUDE_INSTALL_DIR is deprecated. Use INCLUDE_INSTALL_DIR instead.")
@@ -390,6 +466,7 @@ set(PKGCONFIG_INSTALL_DIR
     "${CMAKE_INSTALL_DATADIR}/pkgconfig"
     CACHE PATH "The directory relative to CMAKE_PREFIX_PATH where eigen3.pc is installed"
     )
+endif ()
 
 
 # similar to set_target_properties but append the property instead of overwriting it
@@ -403,6 +480,7 @@ macro(ei_add_target_property target prop value)
   set_target_properties(${target} PROPERTIES ${prop} "${previous} ${value}")
 endmacro(ei_add_target_property)
 
+if (FALSE) # XXX(kitware): VTK handles installation.
 install(FILES
   signature_of_eigen3_matrix_library
   DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
@@ -598,3 +676,8 @@ install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
 # Add uninstall target
 add_custom_target ( uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EigenUninstall.cmake)
+else ()
+vtk_module_install_headers(
+  DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/Eigen/"
+  SUBDIR      "vtkeigen/Eigen/")
+endif ()

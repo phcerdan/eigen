@@ -8,3 +8,4 @@ process.
 
   * Add `.gitattributes` to avoid failures in VTK's content checks.
   * Remove executable permissions from include files.
+  * Integrate the CMake build with VTK's module system.

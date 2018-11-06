@@ -11,7 +11,7 @@
 #ifndef EIGEN_CORE_H
 #define EIGEN_CORE_H
 
-#define Eigen vtkeigen
+#define Eigen itkeigen
 
 // first thing Eigen does: stop the compiler from committing suicide
 #include "src/Core/util/DisableStupidWarnings.h"

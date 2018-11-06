@@ -677,7 +677,9 @@ install ( FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/UseEigen3.cmake
 add_custom_target ( uninstall
     COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake/EigenUninstall.cmake)
 else ()
-vtk_module_install_headers(
-  DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/eigen/"
-  SUBDIR      "vtkeigen/eigen/")
+install(
+  DIRECTORY   "${CMAKE_CURRENT_SOURCE_DIR}/eigen/"
+  DESTINATION "${ITK3P_INSTALL_INCLUDE_DIR}/itkeigen/eigen"
+  PATTERN "*.txt" EXCLUDE
+  COMPONENT Development)
 endif ()

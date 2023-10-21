@@ -11,6 +11,10 @@
 #ifndef EIGEN_CORE_MODULE_H
 #define EIGEN_CORE_MODULE_H
 
+#if defined(ITK_EIGEN_MANGLE)
+#define Eigen itkeigen
+#endif
+
 // first thing Eigen does: stop the compiler from reporting useless warnings.
 #include "src/Core/util/DisableStupidWarnings.h"
 

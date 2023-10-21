@@ -840,9 +840,14 @@ add_library (ITKInternalEigen3::Eigen ALIAS eigen_internal)
 # to avoid introducing GPL code from Eigen3 internally in ITK.
 option(ITK_USE_EIGEN_MPL2_ONLY "Set compile definition EIGEN_MPL2_ONLY for ITKInternalEigen3." OFF)
 mark_as_advanced(ITK_USE_EIGEN_MPL2_ONLY)
+option(ITK_EIGEN_MANGLE "Replace Eigen namespace with itkeigen to avoid conflicts with other Eigen versions." OFF)
+mark_as_advanced(ITK_EIGEN_MANGLE)
 
 if(ITK_USE_EIGEN_MPL2_ONLY)
   target_compile_definitions (eigen_internal INTERFACE "EIGEN_MPL2_ONLY")
+endif()
+if(ITK_EIGEN_MANGLE)
+  target_compile_definitions (eigen_internal INTERFACE "ITK_EIGEN_MANGLE")
 endif()
 
 # BUILD: go one directory before to localize the headers:
